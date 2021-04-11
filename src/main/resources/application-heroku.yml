@@ -14,12 +14,12 @@ spring:
           use-insecure-trust-manager: true
           handshake-timeout: 10000
       routes:
-        - id: lambda-auth
-          uri: lbs://lambda-auth-service/lambda-auth
+        - id: lambda-auth-service
+          uri: lb://lambda-auth-service/lambda-auth
           predicates:
             - Path=/lambda-auth/**
         - id: delta-notification-service
-          uri: lbs://delta-notification-service/delta-notification
+          uri: lb://delta-notification-service/delta-notification
           predicates:
             - Path=/delta-notification/**
       discovery:
