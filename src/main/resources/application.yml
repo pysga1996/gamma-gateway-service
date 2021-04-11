@@ -1,0 +1,62 @@
+server:
+  port: 8020
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+  compression:
+    enabled: true
+    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
+    min-response-size: 1024
+  http2:
+    enabled: true
+  ssl:
+    enabled: true
+    enabled-protocols: TLSv1.2
+    key-alias: ${SSL_KEY_ALIAS:}
+    key-password: ${SSL_KEY_PASSWORD:}
+    key-store: classpath:vengeance.jks
+    key-store-password: ${SSL_KEYSTORE_PASSWORD:}
+    key-store-type: JKS
+    protocol: TLS
+
+spring:
+  application:
+    name: gamma-gateway-service
+  cloud:
+    gateway:
+      httpclient:
+        ssl:
+          key-password: ${SSL_KEY_PASSWORD:}
+          key-store: classpath:vengeance.jks
+          key-store-password: ${SSL_KEYSTORE_PASSWORD:}
+          key-store-type: JKS
+          use-insecure-trust-manager: true
+          handshake-timeout: 10000
+      routes:
+        - id: alpha-sound
+          uri: lb://lambda-auth-service/lambda-auth
+          predicates:
+            - Path=/lambda-auth/**
+        - id: delta-notification-service
+          uri: lb://delta-notification-service/delta-notification
+          predicates:
+            - Path=/delta-notification/**
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+    loadbalancer:
+      ribbon:
+        enabled: false
+eureka:
+  instance:
+    hostname: localhost
+#    prefer-ip-address: true
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8010/eureka
+custom:
+  trust-store-password: ${SSL_TRUSTSTORE_PASSWORD:}
+  trust-store-type: JKS
