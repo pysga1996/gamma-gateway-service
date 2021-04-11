@@ -15,11 +15,11 @@ spring:
           handshake-timeout: 10000
       routes:
         - id: lambda-auth-service
-          uri: lb://lambda-auth-service/lambda-auth
+          uri: lbs://lambda-auth-service/lambda-auth
           predicates:
             - Path=/lambda-auth/**
         - id: delta-notification-service
-          uri: lb://delta-notification-service/delta-notification
+          uri: lbs://delta-notification-service/delta-notification
           predicates:
             - Path=/delta-notification/**
       discovery:
