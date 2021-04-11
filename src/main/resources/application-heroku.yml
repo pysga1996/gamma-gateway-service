@@ -36,3 +36,6 @@ eureka:
   client:
     serviceUrl:
       defaultZone: https://chi-discovery-service.herokuapp.com/eureka
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
