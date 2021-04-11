@@ -4,12 +4,6 @@ server:
     encoding:
       charset: UTF-8
       enabled: true
-  compression:
-    enabled: true
-    mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
-    min-response-size: 1024
-  http2:
-    enabled: true
 spring:
   application:
     name: gamma-gateway-service
@@ -20,12 +14,12 @@ spring:
           use-insecure-trust-manager: true
           handshake-timeout: 10000
       routes:
-        - id: alpha-sound
-          uri: lb://lambda-auth-service/lambda-auth
+        - id: lambda-auth
+          uri: lbs://lambda-auth-service/lambda-auth
           predicates:
             - Path=/lambda-auth/**
         - id: delta-notification-service
-          uri: lb://delta-notification-service/delta-notification
+          uri: lbs://delta-notification-service/delta-notification
           predicates:
             - Path=/delta-notification/**
       discovery:
@@ -41,4 +35,4 @@ eureka:
   #    prefer-ip-address: true
   client:
     serviceUrl:
-      defaultZone: http://chi-discovery-service.herokuapp.com/eureka
+      defaultZone: https://chi-discovery-service.herokuapp.com/eureka
