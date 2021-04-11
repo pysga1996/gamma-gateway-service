@@ -1,8 +1,6 @@
 spring:
   application:
     name: gamma-gateway-service
-  profiles:
-    active: default
   cloud:
     config:
       uri: ${CONFIG_URI:}
