@@ -14,11 +14,14 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnCloudPlatform;
+import org.springframework.boot.cloud.CloudPlatform;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 
 @Log4j2
 @Configuration
+@ConditionalOnCloudPlatform(CloudPlatform.NONE)
 public class SSLConfig {
 
     @Value("classpath:vengeance.jks")
