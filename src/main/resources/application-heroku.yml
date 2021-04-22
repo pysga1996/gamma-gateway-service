@@ -5,23 +5,46 @@ server:
       charset: UTF-8
       enabled: true
 spring:
-  application:
-    name: gamma-gateway-service
+  redis:
+    url: ${REDIS_URL:}
   cloud:
     gateway:
       httpclient:
         ssl:
           use-insecure-trust-manager: true
           handshake-timeout: 10000
+      filter:
+        request-rate-limiter:
+          deny-empty-key: false
+          empty-key-status-code: 503
       routes:
+        - id: alpha-sound-service
+          uri: lb://alpha-sound-service/alpha-sound
+          predicates:
+            - Path=/alpha-sound/**
+        - id: kappa-talk-server
+          uri: lb://kappa-talk-server/kappa-talk
+          predicates:
+            - Path=/kappa-talk/**
         - id: lambda-auth-service
           uri: lb://lambda-auth-service/lambda-auth
           predicates:
             - Path=/lambda-auth/**
+          filters:
+          - name: RequestRateLimiter
+            args:
+              key-resolver: "#{@addressKeyResolver}"
+              redis-rate-limiter.replenishRate: 100
+              redis-rate-limiter.burstCapacity: 50
+              redis-rate-limiter.requestedTokens: 1
         - id: delta-notification-service
           uri: lb://delta-notification-service/delta-notification
           predicates:
             - Path=/delta-notification/**
+        - id: omega-buy-service
+          uri: lb://omega-buy-service/omega-buy
+          predicates:
+            - Path=/omega-buy/**
       discovery:
         locator:
           enabled: true
@@ -29,13 +52,8 @@ spring:
     loadbalancer:
       ribbon:
         enabled: false
-eureka:
-  instance:
-    hostname: gamma-gateway-service.herokuapp.com
-  #    prefer-ip-address: true
-  client:
-    serviceUrl:
-      defaultZone: https://chi-discovery-service.herokuapp.com/eureka
 logging:
+  config: classpath:log4j-spring.xml
   level:
     org.springframework.cloud.gateway: TRACE
+      com.vengeance.gamma: DEBUG

@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "custom.trust-store-password",
+      "type": "java.lang.String",
+      "description": "Description for custom.trust-store-password."
+    },
+    {
+      "name": "custom.trust-store-type",
+      "type": "java.lang.String",
+      "description": "Description for custom.trust-store-type."
+    }
+  ] }

@@ -1,4 +1,4 @@
-package com.vengeance.gamma;
+package com.gamma;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,13 +12,13 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.Resource;
 
+@Log4j2
 @Configuration
-@Profile({"default","poweredge"})
 public class SSLConfig {
 
     @Value("classpath:vengeance.jks")
@@ -30,17 +30,8 @@ public class SSLConfig {
     @Value("${custom.trust-store-type}")
     private String trustStoreType;
 
-//    @PostConstruct
-//    private void configureSSL() throws IOException {
-////        System.setProperty("javax.net.debug", "ssl");
-//        System.setProperty("https.protocols", "TLSv1.2");
-//        System.setProperty("javax.net.ssl.trustStore", Paths.get(trustStore.getURI()).toString());
-//        System.setProperty("javax.net.ssl.trustStorePassword", Objects.requireNonNull(trustStorePassword));
-//        System.setProperty("javax.net.ssl.trustStoreType", Objects.requireNonNull(trustStoreType));
-//    }
-
     @PostConstruct
-    public void configureSSL() {
+    public void initSSLContext() {
         try {
             HttpsURLConnection.setDefaultHostnameVerifier((hostname, sslSession) -> hostname.equals("localhost"));
             //Gets the inputstream of a a trust store file under ssl/rpgrenadesClient.jks
@@ -65,9 +56,9 @@ public class SSLConfig {
             //Sets our new SSLContext to be used.
             SSLContext.setDefault(context);
         } catch (KeyStoreException | IOException | NoSuchAlgorithmException
-                | CertificateException | KeyManagementException ex) {
+            | CertificateException | KeyManagementException ex) {
             //Handle error
-            ex.printStackTrace();
+            log.error(ex);
         }
     }
 }
