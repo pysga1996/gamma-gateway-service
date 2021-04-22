@@ -56,4 +56,4 @@ logging:
   config: classpath:log4j-spring.xml
   level:
     org.springframework.cloud.gateway: TRACE
-      com.vengeance.gamma: DEBUG
+    com.vengeance.gamma: DEBUG
