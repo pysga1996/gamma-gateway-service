@@ -10,6 +10,9 @@ spring:
       username: ${CONFIG_USERNAME:}
       password: ${CONFIG_PASSWORD:}
       label: ${CONFIG_GIT_BRANCH:}
+    loadbalancer:
+      ribbon:
+        enabled: false
 eureka:
   instance:
     hostname: localhost
