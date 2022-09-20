@@ -1,8 +1,8 @@
 FROM alpine-java:base
 MAINTAINER pysga1996
-WORKDIR /opt/gamma-gateway-service
-COPY ./gamma-gateway-service-0.0.1-SNAPSHOT.jar /opt/gamma-gateway-service
+WORKDIR /app
+COPY ./target/gamma-gateway-service-0.0.1-SNAPSHOT.jar /opt
 ENTRYPOINT ["/usr/bin/java"]
-CMD ["-Dspring.profiles.active=poweredge", "-jar", "./gamma-gateway-service-0.0.1-SNAPSHOT.jar"]
-VOLUME /opt/gamma-gateway-service
+CMD ["-Dspring.profiles.active=k8s", "-jar", "/opt/gamma-gateway-service-0.0.1-SNAPSHOT.jar"]
+VOLUME /app
 EXPOSE 8020

@@ -1,0 +1,131 @@
+logging:
+  config: classpath:log4j-spring.xml
+  level:
+    org.springframework.cloud.gateway: TRACE
+    com.vengeance.gamma: DEBUG
+server:
+  port: 8020
+  servlet:
+    context-path: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+
+spring:
+  application:
+    name: gamma-gateway-service
+  redis:
+    host: ${REDIS_HOST:}
+    port: ${REDIS_PORT:}
+    database: ${REDIS_DB:}
+    password: ${REDIS_PASSWORD:}
+  cloud:
+    gateway:
+      filter:
+        request-rate-limiter:
+          deny-empty-key: false
+          empty-key-status-code: 503
+      routes:
+        - id: chi-discovery-service
+          uri: lb://chi-discovery-service
+          predicates:
+            - Path=/service/chi-discovery/**
+          filters:
+            - RewritePath=/service/alpha-sound/(?<segment>.*), /alpha-sound/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /service/alpha-sound
+        - id: phi-config-service
+          uri: lb://phi-config-service
+          predicates:
+            - Path=/service/phi-config/**
+          filters:
+            - RewritePath=/service/phi-config/(?<segment>.*), /phi-config/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /service/phi-config
+        - id: alpha-sound-service
+          uri: lb://alpha-sound-service
+          predicates:
+            - Path=/service/alpha-sound/**
+          filters:
+            - RewritePath=/service/alpha-sound/(?<segment>.*), /alpha-sound/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /service/alpha-sound
+        - id: kappa-talk-server
+          uri: lb://kappa-talk-server
+          predicates:
+            - Path=/server/kappa-talk/**
+          filters:
+            - RewritePath=/server/kappa-talk/(?<segment>.*), /kappa-talk/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /server/kappa-talk
+        - id: kappa-talk-server-sockjs
+          uri: lb:ws://kappa-talk-server
+          predicates:
+            - Path=/server/kappa-talk/ws/info/**
+          filters:
+            - RewritePath=/server/kappa-talk/(?<segment>.*), /kappa-talk/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /server/kappa-talk
+        - id: kappa-talk-server-websocket
+          uri: lb:ws://kappa-talk-server
+          predicates:
+            - Path=/server/kappa-talk/ws/**
+          filters:
+            - RewritePath=/server/kappa-talk/(?<segment>.*), /kappa-talk/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /server/kappa-talk
+        - id: lambda-auth-service
+          uri: lb://lambda-auth-service
+          predicates:
+            - Path=/service/lambda-auth/**
+          filters:
+            - RewritePath=/service/lambda-auth/(?<segment>.*), /lambda-auth/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /service/lambda-auth
+            - name: RequestRateLimiter
+              args:
+                key-resolver: "#{@addressKeyResolver}"
+                redis-rate-limiter.replenishRate: 100
+                redis-rate-limiter.burstCapacity: 50
+                redis-rate-limiter.requestedTokens: 1
+        - id: delta-notification-service
+          uri: lb://delta-notification-service
+          predicates:
+            - Path=/service/delta-notification/**
+          filters:
+            - RewritePath=/service/delta-notification/(?<segment>.*), /delta-notification/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /service/delta-notification
+        - id: omega-buy-service
+          uri: lb://omega-buy-service
+          predicates:
+            - Path=/service/omega-buy/**
+          filters:
+            - RewritePath=/service/omega-buy/(?<segment>.*), /omega-buy/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /service/omega-buy
+        - id: alpha-sound-client
+          uri: https://localhost:4300
+          predicates:
+            - Path=/client/alpha-sound/**
+        - id: omega-buy-client
+          uri: https://localhost:3000
+          predicates:
+            - Path=/client/omega-buy/**
+        - id: kappa-talk-client
+          uri: https://localhost:4200
+          predicates:
+            - Path=/client/kappa-talk/**
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      x-forwarded:
+        enabled: true
+        for-enabled: true
+        host-enabled: true
+        port-enabled: true
+        proto-enabled: true
+        prefix-enabled: false
+        for-append: true
+        host-append: true
+        port-append: true
+        proto-append: true
+        prefix-append: false
+    loadbalancer:
+      ribbon:
+        enabled: false
+custom:
+  trust-store-password: ${SSL_TRUSTSTORE_PASSWORD:}
+  trust-store-type: JKS
