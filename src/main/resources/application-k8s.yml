@@ -4,7 +4,7 @@ logging:
     org.springframework.cloud.gateway: TRACE
     com.vengeance.gamma: DEBUG
 server:
-  port: 8020
+  port: 80
   servlet:
     context-path: /
     encoding:
