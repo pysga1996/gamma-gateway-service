@@ -39,10 +39,34 @@
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-gateway</artifactId>
     </dependency>
+<!--    change eureka client to k8s load balancer dependencies to fix 503 error when routing to lb:spring-service-name-->
+<!--    or using k8s service syntax http://<k8s-service-name>.<k8s-namespace-name>.svc.cluster.local-->
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.cloud</groupId>-->
+<!--      <artifactId>spring-cloud-starter-kubernetes</artifactId>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>org.springframework.cloud</groupId>-->
+<!--      <artifactId>spring-cloud-starter-loadbalancer</artifactId>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
       <version>3.0.2</version>
+<!--      <exclusions>-->
+<!--        <exclusion>-->
+<!--          <groupId>org.springframework.cloud</groupId>-->
+<!--          <artifactId>spring-cloud-starter-netflix-archaius</artifactId>-->
+<!--        </exclusion>-->
+<!--        <exclusion>-->
+<!--          <groupId>org.springframework.cloud</groupId>-->
+<!--          <artifactId>spring-cloud-starter-netflix-ribbon</artifactId>-->
+<!--        </exclusion>-->
+<!--        <exclusion>-->
+<!--          <groupId>com.netflix.ribbon</groupId>-->
+<!--          <artifactId>ribbon-eureka</artifactId>-->
+<!--        </exclusion>-->
+<!--      </exclusions>-->
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>

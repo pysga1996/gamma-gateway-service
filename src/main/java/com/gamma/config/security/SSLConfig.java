@@ -80,7 +80,7 @@ public class SSLConfig {
         return new TrustManager[] {trm};
     }
 
-    @PostConstruct
+//    @PostConstruct
     public SSLContext customSSL() {
         try {
             HttpsURLConnection
