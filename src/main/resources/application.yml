@@ -161,5 +161,5 @@ custom:
 logging:
   config: classpath:log4j-spring.xml
   level:
-    org.springframework.cloud.gateway: TRACE
+    org.springframework.cloud.gateway: DEBUG
     com.vengeance.gamma: DEBUG

@@ -1,8 +1,8 @@
 logging:
   config: classpath:log4j-spring.xml
   level:
-    org.springframework.cloud.gateway: TRACE
-    com.vengeance.gamma: DEBUG
+    org.springframework.cloud.gateway: INFO
+    root: INFO
 server:
   port: 80
   servlet:
@@ -10,7 +10,8 @@ server:
     encoding:
       charset: UTF-8
       enabled: true
-
+  ssl:
+    enabled: false
 spring:
   application:
     name: gamma-gateway-service
@@ -27,53 +28,39 @@ spring:
           empty-key-status-code: 503
       routes:
         - id: chi-discovery-service
-          uri: lb://chi-discovery-service
+          uri: http://chi-discovery.vengeance.svc.cluster.local
           predicates:
             - Path=/service/chi-discovery/**
           filters:
-            - RewritePath=/service/alpha-sound/(?<segment>.*), /alpha-sound/$\{segment}
+            - RewritePath=/service/chi-discovery/(?<segment>.*), /$\{segment}
             - AddRequestHeader=X-Forwarded-Prefix, /service/alpha-sound
         - id: phi-config-service
-          uri: lb://phi-config-service
+          uri: http://phi-config.vengeance.svc.cluster.local
           predicates:
             - Path=/service/phi-config/**
           filters:
-            - RewritePath=/service/phi-config/(?<segment>.*), /phi-config/$\{segment}
+            - RewritePath=/service/phi-config/(?<segment>.*), /$\{segment}
             - AddRequestHeader=X-Forwarded-Prefix, /service/phi-config
         - id: alpha-sound-service
-          uri: lb://alpha-sound-service
+          uri: http://alpha-sound.vengeance.svc.cluster.local
           predicates:
             - Path=/service/alpha-sound/**
           filters:
-            - RewritePath=/service/alpha-sound/(?<segment>.*), /alpha-sound/$\{segment}
+            - RewritePath=/service/alpha-sound/(?<segment>.*), /$\{segment}
             - AddRequestHeader=X-Forwarded-Prefix, /service/alpha-sound
         - id: kappa-talk-server
-          uri: lb://kappa-talk-server
+          uri: http://kappa-talk.vengeance.svc.cluster.local
           predicates:
             - Path=/server/kappa-talk/**
           filters:
-            - RewritePath=/server/kappa-talk/(?<segment>.*), /kappa-talk/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /server/kappa-talk
-        - id: kappa-talk-server-sockjs
-          uri: lb:ws://kappa-talk-server
-          predicates:
-            - Path=/server/kappa-talk/ws/info/**
-          filters:
-            - RewritePath=/server/kappa-talk/(?<segment>.*), /kappa-talk/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /server/kappa-talk
-        - id: kappa-talk-server-websocket
-          uri: lb:ws://kappa-talk-server
-          predicates:
-            - Path=/server/kappa-talk/ws/**
-          filters:
-            - RewritePath=/server/kappa-talk/(?<segment>.*), /kappa-talk/$\{segment}
+            - RewritePath=/server/kappa-talk/(?<segment>.*), /$\{segment}
             - AddRequestHeader=X-Forwarded-Prefix, /server/kappa-talk
         - id: lambda-auth-service
-          uri: lb://lambda-auth-service
+          uri: http://lambda-auth.vengeance.svc.cluster.local
           predicates:
             - Path=/service/lambda-auth/**
           filters:
-            - RewritePath=/service/lambda-auth/(?<segment>.*), /lambda-auth/$\{segment}
+            - RewritePath=/service/lambda-auth/(?<segment>.*), /$\{segment}
             - AddRequestHeader=X-Forwarded-Prefix, /service/lambda-auth
             - name: RequestRateLimiter
               args:
@@ -82,31 +69,16 @@ spring:
                 redis-rate-limiter.burstCapacity: 50
                 redis-rate-limiter.requestedTokens: 1
         - id: delta-notification-service
-          uri: lb://delta-notification-service
+          uri: http://delta-notification.vengeance.svc.cluster.local
           predicates:
             - Path=/service/delta-notification/**
           filters:
-            - RewritePath=/service/delta-notification/(?<segment>.*), /delta-notification/$\{segment}
+            - RewritePath=/service/delta-notification/(?<segment>.*), /$\{segment}
             - AddRequestHeader=X-Forwarded-Prefix, /service/delta-notification
-        - id: omega-buy-service
-          uri: lb://omega-buy-service
+        - id: vengeance-client
+          uri: http://vengeance.vengeance.svc.cluster.local
           predicates:
-            - Path=/service/omega-buy/**
-          filters:
-            - RewritePath=/service/omega-buy/(?<segment>.*), /omega-buy/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /service/omega-buy
-        - id: alpha-sound-client
-          uri: https://localhost:4300
-          predicates:
-            - Path=/client/alpha-sound/**
-        - id: omega-buy-client
-          uri: https://localhost:3000
-          predicates:
-            - Path=/client/omega-buy/**
-        - id: kappa-talk-client
-          uri: https://localhost:4200
-          predicates:
-            - Path=/client/kappa-talk/**
+            - Path=/**
       discovery:
         locator:
           enabled: true
