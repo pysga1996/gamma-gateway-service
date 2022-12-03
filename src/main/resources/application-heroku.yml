@@ -115,6 +115,13 @@ spring:
         port-append: true
         proto-append: true
         prefix-append: false
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedHeaders: "*"
+            allowedMethods: "*"
+            allowedCredentials: true
     loadbalancer:
       ribbon:
         enabled: false
