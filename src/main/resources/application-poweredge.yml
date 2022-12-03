@@ -141,10 +141,12 @@ spring:
         port-append: true
         proto-append: true
         prefix-append: false
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "*"
+            allowedOriginPatterns: "*"
             allowedHeaders: "*"
             allowedMethods: "*"
             allowedCredentials: true
