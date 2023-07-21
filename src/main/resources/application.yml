@@ -1,3 +1,8 @@
+logging:
+  config: classpath:log4j-spring.xml
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    com.vengeance.gamma: DEBUG
 server:
   port: 8020
   servlet:
@@ -9,17 +14,6 @@ server:
     enabled: true
     mime-types: text/html,text/xml,text/plain,text/css,text/javascript,application/javascript,application/json
     min-response-size: 1024
-  http2:
-    enabled: true
-  ssl:
-    enabled: true
-    enabled-protocols: TLSv1.2
-    key-alias: ${SSL_KEY_ALIAS:}
-    key-password: ${SSL_KEY_PASSWORD:}
-    key-store: classpath:vengeance.jks
-    key-store-password: ${SSL_KEYSTORE_PASSWORD:}
-    key-store-type: JKS
-    protocol: TLS
 
 spring:
   application:
@@ -29,11 +23,3 @@ spring:
     port: ${REDIS_PORT:}
     database: ${REDIS_DB:}
     password: ${REDIS_PASSWORD:}
-custom:
-  trust-store-password: ${SSL_TRUSTSTORE_PASSWORD:}
-  trust-store-type: JKS
-logging:
-  config: classpath:log4j-spring.xml
-  level:
-    org.springframework.cloud.gateway: DEBUG
-    com.vengeance.gamma: DEBUG

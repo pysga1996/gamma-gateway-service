@@ -1,6 +1,4 @@
 spring:
-  application:
-    name: gamma-gateway-service
   cloud:
     gateway:
       httpclient:

@@ -1,3 +1,8 @@
+logging:
+  config: classpath:log4j-spring.xml
+  level:
+    org.springframework.cloud.gateway: TRACE
+    com.vengeance.gamma: DEBUG
 server:
   servlet:
     context-path: /
@@ -5,10 +10,7 @@ server:
       charset: UTF-8
       enabled: true
 spring:
+  application:
+    name: gamma-gateway-service
   redis:
     url: ${REDIS_URL:}
-logging:
-  config: classpath:log4j-spring.xml
-  level:
-    org.springframework.cloud.gateway: TRACE
-    com.vengeance.gamma: DEBUG

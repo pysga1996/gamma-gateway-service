@@ -10,8 +10,6 @@ server:
     encoding:
       charset: UTF-8
       enabled: true
-  ssl:
-    enabled: false
 spring:
   application:
     name: gamma-gateway-service
@@ -20,6 +18,3 @@ spring:
     port: ${REDIS_PORT:}
     database: ${REDIS_DB:}
     password: ${REDIS_PASSWORD:}
-custom:
-  trust-store-password: ${SSL_TRUSTSTORE_PASSWORD:}
-  trust-store-type: JKS
