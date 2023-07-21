@@ -13,52 +13,52 @@ spring:
         - id: chi-discovery-service
           uri: lb://chi-discovery-service
           predicates:
-            - Path=/service/chi-discovery/**
+            - Path=/chi-discovery-service/**
           filters:
-            - RewritePath=/service/alpha-sound/(?<segment>.*), /alpha-sound/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /service/alpha-sound
+            - RewritePath=/chi-discovery-service/?(?<remaining>.*), /chi-discovery-service/$\{remaining}
+            - AddRequestHeader=X-Forwarded-Prefix, /chi-discovery-service
         - id: phi-config-service
           uri: lb://phi-config-service
           predicates:
-            - Path=/service/phi-config/**
+            - Path=/phi-config-service/**
           filters:
-            - RewritePath=/service/phi-config/(?<segment>.*), /phi-config/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /service/phi-config
+            #            - RewritePath=/service/phi-config/(?<segment>.*), /phi-config/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /phi-config-service
         - id: alpha-sound-service
           uri: lb://alpha-sound-service
           predicates:
-            - Path=/service/alpha-sound/**
+            - Path=/alpha-sound-service/**
           filters:
-            - RewritePath=/service/alpha-sound/(?<segment>.*), /alpha-sound/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /service/alpha-sound
+            - RewritePath=/alpha-sound-service/(?<segment>.*), /alpha-sound-service/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /alpha-sound-service
         - id: kappa-talk-server
           uri: lb://kappa-talk-server
           predicates:
-            - Path=/server/kappa-talk/**
+            - Path=/kappa-talk-server/**
           filters:
-            - RewritePath=/server/kappa-talk/(?<segment>.*), /kappa-talk/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /server/kappa-talk
+            - RewritePath=/kappa-talk-server/(?<segment>.*), /kappa-talk-server/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /kappa-talk-server
         - id: kappa-talk-server-sockjs
           uri: lb:ws://kappa-talk-server
           predicates:
-            - Path=/server/kappa-talk/ws/info/**
+            - Path=/kappa-talk-server/ws/info/**
           filters:
-            - RewritePath=/server/kappa-talk/(?<segment>.*), /kappa-talk/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /server/kappa-talk
+            - RewritePath=/kappa-talk-server/ws/info/(?<segment>.*), /kappa-talk-server/ws/info/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /kappa-talk-server/ws/info
         - id: kappa-talk-server-websocket
           uri: lb:ws://kappa-talk-server
           predicates:
-            - Path=/server/kappa-talk/ws/**
+            - Path=/kappa-talk-server/ws/**
           filters:
-            - RewritePath=/server/kappa-talk/(?<segment>.*), /kappa-talk/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /server/kappa-talk
+            - RewritePath=/kappa-talk-server/ws/(?<segment>.*), /kappa-talk-server/ws/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /kappa-talk-server/ws
         - id: lambda-auth-service
           uri: lb://lambda-auth-service
           predicates:
-            - Path=/service/lambda-auth/**
+            - Path=/lambda-auth-service/**
           filters:
-            - RewritePath=/service/lambda-auth/(?<segment>.*), /lambda-auth/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /service/lambda-auth
+            - RewritePath=/lambda-auth-service/(?<segment>.*), /lambda-auth-service/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /lambda-auth-service
             - name: RequestRateLimiter
               args:
                 key-resolver: "#{@addressKeyResolver}"
@@ -68,33 +68,22 @@ spring:
         - id: delta-notification-service
           uri: lb://delta-notification-service
           predicates:
-            - Path=/service/delta-notification/**
+            - Path=/delta-notification-service/**
           filters:
-            - RewritePath=/service/delta-notification/(?<segment>.*), /delta-notification/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /service/delta-notification
-        - id: omega-buy-service
-          uri: lb://omega-buy-service
-          predicates:
-            - Path=/service/omega-buy/**
-          filters:
-            - RewritePath=/service/omega-buy/(?<segment>.*), /omega-buy/$\{segment}
-            - AddRequestHeader=X-Forwarded-Prefix, /service/omega-buy
+            - RewritePath=/delta-notification-service/(?<segment>.*), /delta-notification-service/$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /delta-notification-service
         - id: alpha-sound-client
           uri: https://alpha-sound.netlify.app
           predicates:
-            - Path=/client/alpha-sound/**
-        - id: omega-buy-client
-          uri: https://omega-buy.netlify.app
-          predicates:
-            - Path=/client/omega-buy/**
+            - Path=/alpha-sound-client/**
         - id: kappa-talk-client
           uri: https://kappa-talk.netlify.app
           predicates:
-            - Path=/client/kappa-talk/**
-      discovery:
-        locator:
-          enabled: true
-          lower-case-service-id: true
+            - Path=/kappa-talk-client/**
+#      discovery:
+#        locator:
+#          enabled: true
+#          lower-case-service-id: true
       x-forwarded:
         enabled: true
         for-enabled: true

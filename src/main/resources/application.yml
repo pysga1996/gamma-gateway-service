@@ -2,7 +2,7 @@ logging:
   config: classpath:log4j-spring.xml
   level:
     org.springframework.cloud.gateway: DEBUG
-    com.vengeance.gamma: DEBUG
+    root: INFO
 server:
   port: 8020
   servlet:

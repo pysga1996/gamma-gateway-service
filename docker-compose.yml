@@ -1,0 +1,28 @@
+version: "2.4"
+networks:
+  global:
+    external: true
+services:
+  gamma-gateway-service:
+    env_file:
+      - "./environment/poweredge.env"
+    container_name: gamma-gateway-service
+    hostname: gamma-gateway-service.vengeance.svc.cluster.local
+      # build:
+      # context: '.'
+    # dockerfile: Dockerfile
+    image: pysga1996/prv_repo:gamma-gateway-service
+    expose:
+      - 80
+    ports:
+      - "8020:80"
+    networks:
+      - global
+    volumes:
+      - ./:/app
+    restart: no
+    logging:
+      driver: json-file
+    mem_limit: 512M
+    mem_reservation: 128M
+    cpus: 0.5

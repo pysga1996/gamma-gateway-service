@@ -1,4 +1,4 @@
-FROM alpine-java:base
+FROM openjdk:8-jdk-alpine
 MAINTAINER pysga1996
 WORKDIR /app
 COPY ./target/gamma-gateway-service-0.0.1-SNAPSHOT.jar /opt
