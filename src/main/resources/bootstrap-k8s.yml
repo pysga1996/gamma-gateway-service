@@ -11,14 +11,14 @@ spring:
           predicates:
             - Path=/chi-discovery-service/**
           filters:
-            - RewritePath=/chi-discovery-service/?(?<remaining>.*), /chi-discovery-service/$\{remaining}
+            - RewritePath=/chi-discovery-service/?(?<segment>.*), /chi-discovery-service/$\{segment}
             - AddRequestHeader=X-Forwarded-Prefix, /chi-discovery-service
         - id: phi-config-service
           uri: lb://phi-config-service
           predicates:
             - Path=/phi-config-service/**
           filters:
-            #            - RewritePath=/service/phi-config/(?<segment>.*), /phi-config/$\{segment}
+            - RewritePath=/phi-config-service/(?<segment>.*), /phi-config-service/$\{segment}
             - AddRequestHeader=X-Forwarded-Prefix, /phi-config-service
         - id: alpha-sound-service
           uri: lb://alpha-sound-service
@@ -55,12 +55,12 @@ spring:
           filters:
             - RewritePath=/lambda-auth-service/(?<segment>.*), /lambda-auth-service/$\{segment}
             - AddRequestHeader=X-Forwarded-Prefix, /lambda-auth-service
-            - name: RequestRateLimiter
-              args:
-                key-resolver: "#{@addressKeyResolver}"
-                redis-rate-limiter.replenishRate: 100
-                redis-rate-limiter.burstCapacity: 50
-                redis-rate-limiter.requestedTokens: 1
+#            - name: RequestRateLimiter
+#              args:
+#                key-resolver: "#{@addressKeyResolver}"
+#                redis-rate-limiter.replenishRate: 100
+#                redis-rate-limiter.burstCapacity: 50
+#                redis-rate-limiter.requestedTokens: 1
         - id: delta-notification-service
           uri: lb://delta-notification-service
           predicates:
@@ -102,10 +102,10 @@ spring:
             allowedMethods: "*"
             allowedCredentials: true
     config:
-#      uri: ${CONFIG_URI:}
-      discovery:
-        service-id: phi-config-service
-        enabled: true
+      uri: ${CONFIG_URI:}
+#      discovery:
+#        service-id: phi-config-service
+#        enabled: true
       username: ${CONFIG_USERNAME:}
       password: ${CONFIG_PASSWORD:}
       label: ${CONFIG_GIT_BRANCH:}
@@ -115,6 +115,8 @@ spring:
 eureka:
   instance:
     hostname: ${GAMMA_GATEWAY_HOSTNAME:}
+    secure-port-enabled: true
+    non-secure-port-enabled: true
   #    prefer-ip-address: true
   client:
     serviceUrl:

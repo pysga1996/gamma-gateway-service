@@ -106,7 +106,7 @@ spring:
             allowedMethods: "*"
             allowedCredentials: true
     config:
-#      uri: ${CONFIG_URI:}
+      uri: ${CONFIG_URI:}
       discovery:
         service-id: phi-config-service
         enabled: true
@@ -120,7 +120,7 @@ eureka:
   instance:
     hostname: gamma-gateway-service.herokuapp.com
     secure-port-enabled: true
-    non-secure-port-enabled: false
+    non-secure-port-enabled: true
   #    prefer-ip-address: true
   client:
     serviceUrl:
