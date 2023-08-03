@@ -76,10 +76,16 @@ spring:
           uri: https://alpha-sound.netlify.app
           predicates:
             - Path=/alpha-sound-client/**
+          filters:
+            - RewritePath=/alpha-sound-client/(?<segment>.*), /$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /alpha-sound-client
         - id: kappa-talk-client
           uri: https://kappa-talk.netlify.app
           predicates:
             - Path=/kappa-talk-client/**
+          filters:
+            - RewritePath=/kappa-talk-client/(?<segment>.*), /$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /kappa-talk-client
 #      discovery:
 #        locator:
 #          enabled: true
