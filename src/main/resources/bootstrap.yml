@@ -72,10 +72,16 @@ spring:
           uri: https://localhost:4300
           predicates:
             - Path=/alpha-sound-client/**
+          filters:
+            - RewritePath=/alpha-sound-client/(?<segment>.*), /$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /alpha-sound-client
         - id: kappa-talk-client
           uri: https://localhost:4200
           predicates:
             - Path=/kappa-talk-client/**
+          filters:
+            - RewritePath=/kappa-talk-client/(?<segment>.*), /$\{segment}
+            - AddRequestHeader=X-Forwarded-Prefix, /kappa-talk-client
 #      discovery:
 #        locator:
 #          enabled: true
